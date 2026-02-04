@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dream Tech - Bulk Background Remover</title>
+    <title>Background Remover - Dream Tech</title>
     <style>
-        /* Modern UI Design */
+        /* Dark Theme Design */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f8;
+            background-color: #050505; /* Deep Black Background */
+            color: #ffffff;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -16,42 +17,58 @@
             align-items: center;
         }
 
-        h1 { color: #333; margin-bottom: 5px; }
-        p.sub { color: #666; margin-bottom: 30px; }
+        h1 { 
+            color: #ffffff; 
+            margin-bottom: 5px; 
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        p.sub { 
+            color: #888; 
+            margin-bottom: 30px; 
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
 
-        /* Drag & Drop Area */
+        /* Drag & Drop Area - Dark Mode */
         .upload-area {
             width: 100%;
             max-width: 800px;
-            background: white;
-            border: 2px dashed #3498db;
+            background: #111; /* Slightly lighter black for contrast */
+            border: 2px dashed #333;
             border-radius: 15px;
             padding: 40px;
             text-align: center;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        .upload-area:hover { background-color: #f0f8ff; border-color: #2980b9; }
-        .upload-area h3 { margin: 10px 0; color: #2c3e50; }
-        .upload-area p { color: #7f8c8d; font-size: 14px; }
+        .upload-area:hover { 
+            background-color: #1a1a1a; 
+            border-color: #00a8ff; 
+        }
+
+        .upload-area h3 { margin: 10px 0; color: #eee; }
+        .upload-area p { color: #666; font-size: 14px; }
         .icon { font-size: 50px; }
 
-        /* Results Gallery (The Grid) */
+        /* Results Gallery */
         .gallery {
             width: 100%;
             max-width: 800px;
             margin-top: 30px;
         }
 
-        /* Individual Card Design */
+        /* Individual Card - Dark Mode */
         .image-card {
-            background: white;
+            background: #111;
+            border: 1px solid #222;
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
             gap: 20px;
@@ -67,26 +84,27 @@
 
         .img-container {
             flex: 1;
-            height: 200px; /* Fixed height for consistency */
+            height: 200px; 
             border-radius: 8px;
             overflow: hidden;
-            border: 1px solid #eee;
+            border: 1px solid #333;
             position: relative;
-            background: #eee;
+            background: #222;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Transparency Grid for Result */
+        /* Transparency Grid (Adjusted for Dark Mode) */
         .transparency-bg {
             background-image: 
-                linear-gradient(45deg, #ccc 25%, transparent 25%), 
-                linear-gradient(-45deg, #ccc 25%, transparent 25%), 
-                linear-gradient(45deg, transparent 75%, #ccc 75%), 
-                linear-gradient(-45deg, transparent 75%, #ccc 75%);
+                linear-gradient(45deg, #333 25%, transparent 25%), 
+                linear-gradient(-45deg, #333 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #333 75%), 
+                linear-gradient(-45deg, transparent 75%, #333 75%);
             background-size: 20px 20px;
             background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            background-color: #1a1a1a; /* Darker base */
         }
 
         .img-container img {
@@ -99,11 +117,12 @@
             position: absolute;
             top: 5px;
             left: 5px;
-            background: rgba(0,0,0,0.6);
-            color: white;
+            background: rgba(0,0,0,0.8);
+            color: #aaa;
             padding: 2px 8px;
             font-size: 10px;
             border-radius: 4px;
+            border: 1px solid #333;
         }
 
         /* Status & Actions */
@@ -117,8 +136,8 @@
         }
 
         .loader {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
+            border: 3px solid #333;
+            border-top: 3px solid #00a8ff;
             border-radius: 50%;
             width: 25px;
             height: 25px;
@@ -127,15 +146,18 @@
         }
 
         .btn-dl {
-            background: #27ae60;
+            background: #00a8ff;
             color: white;
             text-decoration: none;
             padding: 8px 15px;
             border-radius: 5px;
             font-size: 13px;
             margin-top: 5px;
-            display: none; /* Hidden until ready */
+            display: none; 
+            transition: 0.2s;
         }
+        
+        .btn-dl:hover { background: #008ecc; }
         
         .error-msg { color: #e74c3c; font-size: 12px; }
 
@@ -145,20 +167,20 @@
 </head>
 <body>
 
-    <h1>Dream Tech Bulk Remover</h1>
-    <p class="sub">Upload Unlimited Photos • Auto Process • Original Quality</p>
+    <h1>Background Remover</h1>
+    <p class="sub">Dream Tech</p>
 
     <div class="upload-area" id="dropZone">
-        <div class="icon">☁️</div>
-        <h3>Drag & Drop Multiple Images</h3>
-        <p>or Click to Select / Ctrl+V to Paste</p>
+        <div class="icon" style="filter: grayscale(1);">☁️</div>
+        <h3>Drag & Drop Photos</h3>
+        <p>or Click to Browse</p>
         <input type="file" id="fileInput" multiple accept="image/png, image/jpeg, image/jpg" style="display:none">
     </div>
 
     <div class="gallery" id="gallery"></div>
 
     <script>
-        // ✅ API KEY SET
+        // ✅ API KEY (Safe)
         const API_KEY = "iC3FnLD75AQ3haPREAJEHY5Z"; 
 
         const dropZone = document.getElementById('dropZone');
@@ -170,21 +192,24 @@
 
         fileInput.addEventListener('change', (e) => {
             handleFiles(e.target.files);
-            fileInput.value = ''; // Reset for next batch
+            fileInput.value = ''; 
         });
 
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
-            dropZone.style.backgroundColor = '#f0f8ff';
+            dropZone.style.backgroundColor = '#1a1a1a';
+            dropZone.style.borderColor = '#00a8ff';
         });
 
         dropZone.addEventListener('dragleave', () => {
-            dropZone.style.backgroundColor = 'white';
+            dropZone.style.backgroundColor = '#111';
+            dropZone.style.borderColor = '#333';
         });
 
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
-            dropZone.style.backgroundColor = 'white';
+            dropZone.style.backgroundColor = '#111';
+            dropZone.style.borderColor = '#333';
             handleFiles(e.dataTransfer.files);
         });
 
@@ -199,7 +224,6 @@
             if(files.length > 0) handleFiles(files);
         });
 
-        // 1. Handle Multiple Files Loop
         function handleFiles(files) {
             Array.from(files).forEach(file => {
                 if (file.type.startsWith('image/')) {
@@ -208,13 +232,10 @@
             });
         }
 
-        // 2. Create Card UI & Start Processing
         function createCardAndProcess(file) {
-            // Generate Unique ID
             const id = Math.random().toString(36).substr(2, 9);
             const originalUrl = URL.createObjectURL(file);
 
-            // Create HTML Structure for the Card
             const cardHTML = `
                 <div class="image-card" id="card-${id}">
                     <div class="compare-box">
@@ -225,30 +246,26 @@
                         <div class="img-container transparency-bg">
                             <span class="label">No Background</span>
                             <img id="res-img-${id}" style="display:none">
-                            <div id="loading-${id}" style="color:#999; font-size:12px;">Waiting...</div>
+                            <div id="loading-${id}" style="color:#666; font-size:12px;">Waiting...</div>
                         </div>
                     </div>
                     
                     <div class="status-box">
                         <div class="loader" id="loader-${id}"></div>
-                        <span id="status-${id}" style="font-size:12px; font-weight:bold; color:#3498db">Processing...</span>
+                        <span id="status-${id}" style="font-size:12px; font-weight:bold; color:#00a8ff">Processing...</span>
                         <a id="dl-${id}" class="btn-dl">Download ⬇️</a>
                     </div>
                 </div>
             `;
 
-            // Add to Gallery (Top)
             gallery.insertAdjacentHTML('afterbegin', cardHTML);
-
-            // Call API
             processSingleImage(file, id);
         }
 
-        // 3. API Logic
         async function processSingleImage(file, id) {
             const formData = new FormData();
             formData.append('image_file', file);
-            formData.append('size', 'auto'); // Full Quality
+            formData.append('size', 'auto'); 
 
             try {
                 const response = await fetch('https://api.remove.bg/v1.0/removebg', {
@@ -261,7 +278,6 @@
                     const blob = await response.blob();
                     const url = URL.createObjectURL(blob);
                     
-                    // Update UI - Show Result
                     const resImg = document.getElementById(`res-img-${id}`);
                     const loadingText = document.getElementById(`loading-${id}`);
                     const loader = document.getElementById(`loader-${id}`);
@@ -276,13 +292,11 @@
                     status.textContent = "Done!";
                     status.style.color = "#27ae60";
 
-                    // Setup Download Button
                     const newFileName = (file.name.split('.')[0] || "image") + "-nobg.png";
                     dlBtn.href = url;
                     dlBtn.download = newFileName;
                     dlBtn.style.display = 'inline-block';
 
-                    // Auto Download Trigger
                     const a = document.createElement('a');
                     a.style.display = 'none';
                     a.href = url;
