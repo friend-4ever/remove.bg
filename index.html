@@ -8,7 +8,7 @@
         /* Dark Theme Design */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #050505; /* Deep Black Background */
+            background-color: #050505; /* Deep Black */
             color: #ffffff;
             margin: 0;
             padding: 20px;
@@ -37,7 +37,7 @@
         .upload-area {
             width: 100%;
             max-width: 800px;
-            background: #111; /* Slightly lighter black for contrast */
+            background: #111; 
             border: 2px dashed #333;
             border-radius: 15px;
             padding: 40px;
@@ -53,7 +53,13 @@
 
         .upload-area h3 { margin: 10px 0; color: #eee; }
         .upload-area p { color: #666; font-size: 14px; }
-        .icon { font-size: 50px; }
+        
+        /* Updated Icon Style */
+        .icon { 
+            font-size: 60px; 
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
+        }
 
         /* Results Gallery */
         .gallery {
@@ -75,7 +81,6 @@
             animation: slideIn 0.4s ease;
         }
 
-        /* Comparison Layout */
         .compare-box {
             display: flex;
             flex: 1;
@@ -95,7 +100,7 @@
             align-items: center;
         }
 
-        /* Transparency Grid (Adjusted for Dark Mode) */
+        /* Transparency Grid */
         .transparency-bg {
             background-image: 
                 linear-gradient(45deg, #333 25%, transparent 25%), 
@@ -104,7 +109,7 @@
                 linear-gradient(-45deg, transparent 75%, #333 75%);
             background-size: 20px 20px;
             background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-            background-color: #1a1a1a; /* Darker base */
+            background-color: #1a1a1a;
         }
 
         .img-container img {
@@ -158,7 +163,6 @@
         }
         
         .btn-dl:hover { background: #008ecc; }
-        
         .error-msg { color: #e74c3c; font-size: 12px; }
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -171,7 +175,7 @@
     <p class="sub">Dream Tech</p>
 
     <div class="upload-area" id="dropZone">
-        <div class="icon" style="filter: grayscale(1);">☁️</div>
+        <div class="icon">🖼️</div> 
         <h3>Drag & Drop Photos</h3>
         <p>or Click to Browse</p>
         <input type="file" id="fileInput" multiple accept="image/png, image/jpeg, image/jpg" style="display:none">
@@ -180,7 +184,7 @@
     <div class="gallery" id="gallery"></div>
 
     <script>
-        // ✅ API KEY (Safe)
+        // ✅ API KEY
         const API_KEY = "iC3FnLD75AQ3haPREAJEHY5Z"; 
 
         const dropZone = document.getElementById('dropZone');
