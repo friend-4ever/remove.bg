@@ -3,50 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dream Tech - Background Remover</title>
+    <title>Dream Tech - HD Background Remover</title>
     <style>
-        /* वेबसाइट का डिज़ाइन */
+        /* General Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #eef2f3;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .container {
             background: white;
-            padding: 2.5rem;
+            padding: 2rem;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
-            width: 450px;
-            max-width: 90%;
+            width: 500px;
+            max-width: 100%;
             border: 1px solid #ddd;
         }
 
-        h2 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        
-        p.subtitle {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-        }
+        h2 { color: #2c3e50; margin-bottom: 5px; }
+        p.subtitle { color: #7f8c8d; font-size: 0.9rem; margin-bottom: 20px; }
 
-        /* Drag and Drop Zone का स्टाइल */
+        /* Drag & Drop Zone */
         .drop-zone {
             border: 3px dashed #bdc3c7;
             border-radius: 15px;
-            padding: 40px 20px;
+            padding: 30px 20px;
             cursor: pointer;
             transition: all 0.3s ease;
             background-color: #f9f9f9;
-            position: relative;
         }
 
         .drop-zone:hover, .drop-zone.dragover {
@@ -55,96 +48,130 @@
             transform: scale(1.02);
         }
 
-        .drop-zone p {
-            font-size: 16px;
-            color: #7f8c8d;
-            margin: 5px 0;
-            pointer-events: none;
-        }
+        .icon { font-size: 40px; display: block; margin-bottom: 10px; }
+        .drop-zone p { margin: 5px 0; color: #7f8c8d; pointer-events: none; }
 
-        .icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        /* Status (Loading/Success) का डिज़ाइन */
-        .status {
+        /* Preview Section */
+        #resultContainer {
+            display: none; /* Initially Hidden */
             margin-top: 25px;
-            font-weight: 600;
-            font-size: 1rem;
-            min-height: 24px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+            animation: fadeIn 0.5s ease;
         }
 
-        .status.loading { color: #e67e22; }
-        .status.success { color: #27ae60; }
-        .status.error { color: #c0392b; }
+        /* Checkered Background for Transparency */
+        .image-wrapper {
+            width: 100%;
+            max-height: 400px;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            /* Photoshop style checkerboard */
+            background-image: 
+                linear-gradient(45deg, #ccc 25%, transparent 25%), 
+                linear-gradient(-45deg, #ccc 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #ccc 75%), 
+                linear-gradient(-45deg, transparent 75%, #ccc 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-        /* लोडिंग गोल चक्का (Spinner) */
+        #previewImage {
+            max-width: 100%;
+            max-height: 350px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .btn-download {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .btn-download:hover { background-color: #2980b9; }
+
+        /* Spinner & Status */
         .spinner {
             display: none;
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             border: 4px solid #f3f3f3;
             border-top: 4px solid #3498db;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 15px auto;
+            margin: 20px auto;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .status { font-weight: bold; margin-top: 15px; }
+        .status.error { color: #c0392b; }
+        .status.success { color: #27ae60; }
 
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         #fileInput { display: none; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>Auto Background Remover</h2>
-        <p class="subtitle">Powered by Dream Tech</p>
+        <h2>HD Background Remover</h2>
+        <p class="subtitle">Upload & Auto-Download High Quality</p>
         
         <div class="drop-zone" id="dropZone">
-            <span class="icon">📂</span>
-            <p><strong>Drag & Drop</strong> Photo Here</p>
+            <span class="icon">🖼️</span>
+            <p><strong>Drag & Drop</strong> Image Here</p>
             <p>or Paste (Ctrl+V)</p>
-            <p style="font-size: 13px; color: #95a5a6; margin-top: 10px;">(Click to Browse)</p>
             <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg">
         </div>
 
         <div class="spinner" id="spinner"></div>
-        <div class="status" id="statusText">Ready to Upload</div>
+        <div class="status" id="statusText"></div>
+
+        <div id="resultContainer">
+            <p style="color: #2c3e50; font-weight: bold; margin-bottom: 10px;">Final Preview:</p>
+            <div class="image-wrapper">
+                <img id="previewImage" alt="Background Removed">
+            </div>
+            <a id="manualDownloadLink" class="btn-download">Download Again ⬇️</a>
+        </div>
     </div>
 
     <script>
-        // ==========================================
-        // ✅ आपकी API KEY यहाँ सेट कर दी गई है
+        // ✅ API Key Integrated
         const API_KEY = "iC3FnLD75AQ3haPREAJEHY5Z"; 
-        // ==========================================
 
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
         const statusText = document.getElementById('statusText');
         const spinner = document.getElementById('spinner');
+        const resultContainer = document.getElementById('resultContainer');
+        const previewImage = document.getElementById('previewImage');
+        const manualDownloadBtn = document.getElementById('manualDownloadLink');
 
-        // 1. क्लिक करने पर अपलोड
+        // Events
         dropZone.addEventListener('click', () => fileInput.click());
 
         fileInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) processImage(e.target.files[0]);
         });
 
-        // 2. ड्रैग और ड्रॉप हैंडलिंग
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
             dropZone.classList.add('dragover');
         });
 
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('dragover');
-        });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
 
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
@@ -152,7 +179,6 @@
             if (e.dataTransfer.files.length > 0) processImage(e.dataTransfer.files[0]);
         });
 
-        // 3. पेस्ट (Ctrl+V) हैंडलिंग
         window.addEventListener('paste', (e) => {
             const items = (e.clipboardData || e.originalEvent.clipboardData).items;
             for (let item of items) {
@@ -162,23 +188,27 @@
             }
         });
 
-        // 4. फोटो प्रोसेस और डाउनलोड करने का फंक्शन
         async function processImage(file) {
-            // चेक करें कि फाइल इमेज है या नहीं
+            // UI Reset
+            resultContainer.style.display = 'none';
+            statusText.textContent = "";
+            
             if (!file.type.startsWith('image/')) {
-                showStatus("⚠️ Please upload a valid image (JPG/PNG)", "error");
+                statusText.textContent = "⚠️ Please upload an image file (JPG/PNG)";
+                statusText.className = "status error";
                 return;
             }
 
-            showStatus("⏳ Removing Background...", "loading");
+            statusText.textContent = "⏳ Processing High Quality Image...";
+            statusText.className = "status";
             spinner.style.display = 'block';
 
             const formData = new FormData();
             formData.append('image_file', file);
-            formData.append('size', 'auto');
+            // 'auto' requests the highest resolution available for your plan
+            formData.append('size', 'auto'); 
 
             try {
-                // Remove.bg को फाइल भेजना
                 const response = await fetch('https://api.remove.bg/v1.0/removebg', {
                     method: 'POST',
                     headers: { 'X-Api-Key': API_KEY },
@@ -186,47 +216,44 @@
                 });
 
                 if (response.ok) {
-                    // अगर सफल हुआ, तो इमेज डाउनलोड करें
                     const blob = await response.blob();
-                    downloadImage(blob, file.name);
-                    showStatus("✅ Done! Downloading...", "success");
+                    const url = URL.createObjectURL(blob);
+
+                    // 1. Show Preview
+                    previewImage.src = url;
+                    
+                    // 2. Setup Manual Download Button
+                    const newFileName = (file.name.split('.')[0] || "image") + "-HD-nobg.png";
+                    manualDownloadBtn.href = url;
+                    manualDownloadBtn.download = newFileName;
+
+                    // 3. Show Result Section
+                    resultContainer.style.display = 'block';
+                    
+                    // 4. Auto Download
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = newFileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                    statusText.textContent = "✅ Success! Image Downloaded.";
+                    statusText.className = "status success";
                 } else {
-                    // अगर कोई एरर आया
                     const errorData = await response.json();
-                    showStatus("❌ Error: " + (errorData.errors[0].title || "API Issue"), "error");
-                    console.error(errorData);
+                    statusText.textContent = "❌ Error: " + (errorData.errors[0].title || "Failed");
+                    statusText.className = "status error";
                 }
             } catch (error) {
-                showStatus("❌ Network Error", "error");
                 console.error(error);
+                statusText.textContent = "❌ Network Error. Check internet.";
+                statusText.className = "status error";
             } finally {
                 spinner.style.display = 'none';
-                fileInput.value = ''; // रीसेट करें ताकि अगली फोटो डाल सकें
+                fileInput.value = '';
             }
-        }
-
-        // ऑटो डाउनलोड फंक्शन
-        function downloadImage(blob, originalName) {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            
-            // फाइल का नाम सेट करना (e.g. photo-dreamtech-nobg.png)
-            const namePart = originalName ? originalName.split('.')[0] : "image";
-            a.download = `${namePart}-dreamtech-nobg.png`;
-            
-            document.body.appendChild(a);
-            a.click();
-            
-            // मेमोरी खाली करें
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        }
-
-        function showStatus(msg, type) {
-            statusText.textContent = msg;
-            statusText.className = 'status ' + type;
         }
     </script>
 </body>
